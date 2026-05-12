@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ground Truth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,800;1,9..144,800&family=Figtree:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #1a6b72;
+        --primary-dark: #15575d;
+        --active: #2d5a3d;
+        --active-dark: #21422d;
+        --accent: #c4956a;
+        --bg-page: #f5eed8;
+        --bg-card: #fffef9;
+        --text: #1a2820;
+        --muted: #4a5c52;
+        --border: rgba(26, 107, 114, 0.2);
+        --shadow-soft: 0 2px 8px rgba(26, 60, 50, 0.06);
+        --shadow-lifted: 0 4px 0 rgba(45, 90, 61, 0.12), 0 6px 16px rgba(26, 107, 114, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg-page);
+        background-image:
+          radial-gradient(ellipse 120% 80% at 100% -20%, rgba(196, 149, 106, 0.12), transparent 50%),
+          radial-gradient(ellipse 90% 60% at 0% 100%, rgba(26, 107, 114, 0.08), transparent 45%);
+        color: var(--text);
+        line-height: 1.45;
+        min-height: 100vh;
+      }
+
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 16px;
+        padding-bottom: 28px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .card--form {
+        background: #ffffff;
+      }
+
+      .card--hero {
+        background: linear-gradient(155deg, var(--primary) 0%, #145a61 52%, var(--primary-dark) 100%);
+        border: none;
+        color: #f5eed8;
+        box-shadow:
+          var(--shadow-soft),
+          0 0 0 1px rgba(0, 0, 0, 0.06),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        line-height: 1.08;
+        font-family: "Fraunces", Georgia, serif;
+        font-weight: 800;
+        font-size: clamp(2rem, 6vw, 2.5rem);
+        letter-spacing: -0.02em;
+        text-shadow: 0 2px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        line-height: 1.25;
+        font-family: "Figtree", sans-serif;
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: var(--primary-dark);
+        letter-spacing: -0.01em;
+        padding-bottom: 6px;
+        border-bottom: 2px solid var(--accent);
+        display: inline-block;
+        width: 100%;
+      }
+
+      .card--hero p {
+        color: rgba(245, 238, 216, 0.95);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      #rating-form-heading {
+        margin-bottom: 14px;
+      }
+
+      section.card > p:first-of-type {
+        margin-bottom: 0;
+      }
+
+      section.card > #rating-form-heading + p {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      .form-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .field label,
+      .field legend {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .field .hint {
+        font-size: 0.85rem;
+        font-weight: 400;
+        color: var(--muted);
+      }
+
+      input[type="text"],
+      input[type="datetime-local"],
+      textarea {
+        width: 100%;
+        min-height: 52px;
+        padding: 14px 16px;
+        font-size: 1rem;
+        font-family: inherit;
+        border: 2px solid rgba(196, 149, 106, 0.35);
+        border-radius: 12px;
+        background: rgba(255, 254, 249, 0.98);
+        color: var(--text);
+        box-shadow: inset 0 2px 4px rgba(26, 40, 32, 0.04);
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      textarea {
+        min-height: 112px;
+        resize: vertical;
+        line-height: 1.5;
+      }
+
+      input:hover,
+      textarea:hover {
+        border-color: rgba(26, 107, 114, 0.35);
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow:
+          inset 0 2px 4px rgba(26, 40, 32, 0.04),
+          0 0 0 3px rgba(196, 149, 106, 0.35);
+      }
+
+      fieldset {
+        margin: 0;
+        padding: 0;
+        border: none;
+      }
+
+      .star-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .star-row input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+      }
+
+      .star-row label {
+        flex: 1;
+        min-width: 54px;
+        min-height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        font-weight: 800;
+        font-family: "Fraunces", Georgia, serif;
+        letter-spacing: -0.03em;
+        color: var(--primary);
+        border: 2px solid rgba(26, 107, 114, 0.25);
+        border-radius: 14px;
+        background: linear-gradient(180deg, #fffefb 0%, #f9f6ef 100%);
+        cursor: pointer;
+        user-select: none;
+        box-shadow: var(--shadow-lifted);
+        transform: translateY(0);
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.15s ease,
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .star-row label:active {
+        transform: translateY(3px);
+        box-shadow:
+          0 1px 0 rgba(45, 90, 61, 0.1),
+          0 2px 8px rgba(26, 107, 114, 0.08);
+      }
+
+      .star-row input:checked + label {
+        background: linear-gradient(180deg, var(--active) 0%, var(--active-dark) 100%);
+        border-color: var(--active-dark);
+        color: #f5eed8;
+        box-shadow:
+          inset 0 3px 8px rgba(0, 0, 0, 0.25),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+          0 1px 0 rgba(255, 255, 255, 0.06);
+        transform: translateY(2px);
+      }
+
+      .star-row input:focus-visible + label {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .toggle-row {
+        display: flex;
+        gap: 12px;
+      }
+
+      .toggle-row input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-row label {
+        flex: 1;
+        min-height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        border: 2px solid rgba(26, 107, 114, 0.22);
+        border-radius: 14px;
+        background: linear-gradient(180deg, #fffefb 0%, #f9f6ef 100%);
+        cursor: pointer;
+        box-shadow: var(--shadow-lifted);
+        transform: translateY(0);
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.15s ease,
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .toggle-row label:active {
+        transform: translateY(3px);
+        box-shadow:
+          0 1px 0 rgba(45, 90, 61, 0.1),
+          0 2px 8px rgba(26, 107, 114, 0.08);
+      }
+
+      .toggle-row input:checked + label {
+        background: linear-gradient(180deg, var(--active) 0%, var(--active-dark) 100%);
+        border-color: var(--active-dark);
+        color: #f5eed8;
+        box-shadow:
+          inset 0 3px 8px rgba(0, 0, 0, 0.22),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+          0 1px 0 rgba(255, 255, 255, 0.05);
+        transform: translateY(2px);
+      }
+
+      .toggle-row input:focus-visible + label {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .form-actions {
+        margin-top: 4px;
+      }
+
+      .btn-submit {
+        width: 100%;
+        min-height: 54px;
+        padding: 16px 20px;
+        font-size: 1.06rem;
+        font-weight: 700;
+        font-family: inherit;
+        letter-spacing: 0.02em;
+        color: #fefcf6;
+        background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        box-shadow:
+          0 4px 0 var(--primary-dark),
+          0 8px 20px rgba(26, 107, 114, 0.35);
+        transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+      }
+
+      .btn-submit:hover {
+        filter: brightness(1.05);
+      }
+
+      .btn-submit:active {
+        transform: translateY(3px);
+        box-shadow:
+          0 1px 0 var(--primary-dark),
+          0 4px 12px rgba(26, 107, 114, 0.28);
+      }
+
+      .btn-submit:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .form-status {
+        margin: 0;
+        min-height: 1.25em;
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .ratings-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 4px;
+      }
+
+      .ratings-controls {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .ratings-filter-toggle input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .ratings-filter-toggle label {
+        min-height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        border: 2px solid rgba(26, 107, 114, 0.22);
+        border-radius: 14px;
+        background: linear-gradient(180deg, #fffefb 0%, #f9f6ef 100%);
+        cursor: pointer;
+        box-shadow: var(--shadow-lifted);
+        transform: translateY(0);
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.15s ease,
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .ratings-filter-toggle label:active {
+        transform: translateY(3px);
+        box-shadow:
+          0 1px 0 rgba(45, 90, 61, 0.1),
+          0 2px 8px rgba(26, 107, 114, 0.08);
+      }
+
+      .ratings-filter-toggle input:checked + label {
+        background: linear-gradient(180deg, var(--active) 0%, var(--active-dark) 100%);
+        border-color: var(--active-dark);
+        color: #f5eed8;
+        box-shadow:
+          inset 0 3px 8px rgba(0, 0, 0, 0.22),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+          0 1px 0 rgba(255, 255, 255, 0.05);
+        transform: translateY(2px);
+      }
+
+      .ratings-filter-toggle input:focus-visible + label {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .ratings-filter-search {
+        gap: 6px;
+      }
+
+      .ratings-filter-search label {
+        font-size: 0.92rem;
+      }
+
+      .rating-item {
+        background: #ffffff;
+        border: 1px solid rgba(26, 107, 114, 0.2);
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .rating-item-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .rating-title {
+        margin: 0;
+        font-size: 1.08rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+      }
+
+      .rating-suburb {
+        margin: 3px 0 0;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .rating-date {
+        margin: 0 0 8px;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .rating-meta {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 8px;
+      }
+
+      .rating-stars {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--active-dark);
+        letter-spacing: 0.04em;
+      }
+
+      .rating-chip {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 30px;
+        padding: 4px 10px;
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: #f5eed8;
+        background: linear-gradient(180deg, var(--active) 0%, var(--active-dark) 100%);
+        border-radius: 999px;
+      }
+
+      .rating-notes {
+        margin: 0;
+        font-size: 0.92rem;
+        color: var(--text);
+        white-space: pre-wrap;
+      }
+
+      .rating-empty {
+        margin: 0;
+        padding-top: 4px;
+        font-style: italic;
+        color: var(--muted);
+      }
+
+      .btn-delete {
+        border: 2px solid rgba(26, 107, 114, 0.25);
+        border-radius: 10px;
+        min-height: 40px;
+        padding: 8px 12px;
+        font-size: 0.86rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        background: linear-gradient(180deg, #fffefb 0%, #f9f6ef 100%);
+        cursor: pointer;
+      }
+
+      .btn-delete:active {
+        transform: translateY(1px);
+      }
+
+      #past-ratings-heading {
+        margin-bottom: 8px;
+      }
+
+      @media (min-width: 768px) {
+        main {
+          padding: 24px;
+          padding-bottom: 32px;
+          gap: 22px;
+        }
+
+        .card {
+          padding: 22px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .star-row label,
+        .toggle-row label,
+        .btn-submit,
+        .ratings-filter-toggle label {
+          transition: none;
+        }
+
+        .star-row label:active,
+        .toggle-row label:active,
+        .ratings-filter-toggle label:active {
+          transform: none;
+        }
+
+        .btn-submit:active {
+          transform: none;
+        }
+
+        .star-row input:checked + label,
+        .toggle-row input:checked + label,
+        .ratings-filter-toggle input:checked + label {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="card card--hero">
+        <h1>Ground Truth</h1>
+        <p>Long black ratings. No milk. No bias.</p>
+      </header>
+
+      <section class="card card--form" aria-labelledby="rating-form-heading">
+        <h2 id="rating-form-heading">Add a Rating</h2>
+        <p class="hint" style="margin-bottom: 16px">Log a visit. Large controls are sized for thumbs on a phone.</p>
+
+        <form id="rating-form" class="form-stack" novalidate>
+          <div class="field">
+            <label for="cafe-name">Cafe name</label>
+            <input id="cafe-name" name="cafe_name" type="text" autocomplete="organization" required placeholder="e.g. Bean Counter" />
+          </div>
+
+          <div class="field">
+            <label for="suburb">Suburb</label>
+            <input id="suburb" name="suburb" type="text" autocomplete="address-level2" required placeholder="e.g. Fitzroy" />
+          </div>
+
+          <fieldset class="field">
+            <legend>Star rating <span class="hint">(1–5)</span></legend>
+            <div class="star-row" role="group" aria-label="Star rating from 1 to 5">
+              <input type="radio" id="star-1" name="stars" value="1" required />
+              <label for="star-1" title="1 star">1</label>
+              <input type="radio" id="star-2" name="stars" value="2" />
+              <label for="star-2" title="2 stars">2</label>
+              <input type="radio" id="star-3" name="stars" value="3" />
+              <label for="star-3" title="3 stars">3</label>
+              <input type="radio" id="star-4" name="stars" value="4" />
+              <label for="star-4" title="4 stars">4</label>
+              <input type="radio" id="star-5" name="stars" value="5" />
+              <label for="star-5" title="5 stars">5</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Price</legend>
+            <div class="toggle-row" role="group" aria-label="Coffee price band">
+              <input type="radio" id="price-under-5" name="coffee_price" value="under_5" required />
+              <label for="price-under-5">Under $5</label>
+              <input type="radio" id="price-5-plus" name="coffee_price" value="5_or_over" />
+              <label for="price-5-plus">$5 or over</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Would I go back?</legend>
+            <div class="toggle-row" role="group" aria-label="Would you return to this cafe">
+              <input type="radio" id="return-yes" name="would_return" value="yes" required />
+              <label for="return-yes">Yes</label>
+              <input type="radio" id="return-no" name="would_return" value="no" />
+              <label for="return-no">No</label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="notes">Notes</label>
+            <textarea id="notes" name="notes" rows="4" placeholder="Taste, vibe, wait time…"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="visited-at">Date &amp; time</label>
+            <input id="visited-at" name="visited_at" type="datetime-local" required />
+            <span class="hint">Pre-filled when you open the form; adjust if needed</span>
+          </div>
+
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Save rating</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card" aria-labelledby="past-ratings-heading">
+        <h2 id="past-ratings-heading">Past Ratings</h2>
+        <div class="ratings-controls">
+          <div class="ratings-filter-toggle">
+            <input id="filter-worth-returning" type="checkbox" />
+            <label for="filter-worth-returning">Worth returning to</label>
+          </div>
+          <div class="field ratings-filter-search">
+            <label for="filter-suburb">Filter by suburb</label>
+            <input id="filter-suburb" type="text" placeholder="e.g. Wellington Point" />
+          </div>
+        </div>
+        <div id="past-ratings-list" class="ratings-list"></div>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        var STORAGE_KEY = "ground-truth-ratings-v1";
+
+        function pad(n) {
+          return n < 10 ? "0" + n : String(n);
+        }
+
+        function toDatetimeLocalValue(d) {
+          return (
+            d.getFullYear() +
+            "-" +
+            pad(d.getMonth() + 1) +
+            "-" +
+            pad(d.getDate()) +
+            "T" +
+            pad(d.getHours()) +
+            ":" +
+            pad(d.getMinutes())
+          );
+        }
+
+        function parseRatings() {
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return [];
+            var parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : [];
+          } catch (err) {
+            return [];
+          }
+        }
+
+        function saveRatings(ratings) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings));
+        }
+
+        function starsText(value) {
+          var count = Number(value) || 0;
+          return "★★★★★".slice(0, count) + "☆☆☆☆☆".slice(0, 5 - count);
+        }
+
+        function priceText(value) {
+          return value === "5_or_over" ? "$5 or over" : "Under $5";
+        }
+
+        function returnText(value) {
+          return value === "yes" ? "Would go back: Yes" : "Would go back: No";
+        }
+
+        function formatDate(value) {
+          if (!value) return "";
+          var date = new Date(value);
+          if (Number.isNaN(date.getTime())) return value;
+          return date.toLocaleString();
+        }
+
+        function escapeHtml(value) {
+          return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function renderRatings() {
+          var listEl = document.getElementById("past-ratings-list");
+          if (!listEl) return;
+          var ratings = parseRatings().slice().sort(function (a, b) {
+            return (b.created_at || "").localeCompare(a.created_at || "");
+          });
+          var worthReturningOnly = filterWorthReturning && filterWorthReturning.checked;
+          var suburbTerm = filterSuburb ? filterSuburb.value.trim().toLowerCase() : "";
+
+          if (worthReturningOnly) {
+            ratings = ratings.filter(function (entry) {
+              return entry.would_return === "yes";
+            });
+          }
+
+          if (suburbTerm) {
+            ratings = ratings.filter(function (entry) {
+              return String(entry.suburb || "")
+                .toLowerCase()
+                .includes(suburbTerm);
+            });
+          }
+
+          if (!ratings.length) {
+            var hasActiveFilters = worthReturningOnly || Boolean(suburbTerm);
+            if (hasActiveFilters) {
+              listEl.innerHTML = '<p class="rating-empty">No ratings match... Time to explore!</p>';
+              return;
+            }
+            listEl.innerHTML = '<p class="rating-empty">No ratings yet. Save your first one above.</p>';
+            return;
+          }
+
+          var items = ratings
+            .map(function (entry) {
+              return (
+                '<article class="rating-item">' +
+                '<div class="rating-item-header">' +
+                "<div>" +
+                '<h3 class="rating-title">' +
+                escapeHtml(entry.cafe_name || "Untitled cafe") +
+                "</h3>" +
+                '<p class="rating-suburb">' +
+                escapeHtml(entry.suburb || "No suburb provided") +
+                "</p>" +
+                "</div>" +
+                '<button class="btn-delete" type="button" data-delete-id="' +
+                escapeHtml(entry.id) +
+                '">Delete</button>' +
+                "</div>" +
+                '<p class="rating-date">' +
+                escapeHtml(formatDate(entry.visited_at || entry.created_at)) +
+                "</p>" +
+                '<div class="rating-meta">' +
+                '<div class="rating-stars">' +
+                escapeHtml(starsText(entry.stars)) +
+                "</div>" +
+                '<span class="rating-chip">' +
+                escapeHtml(priceText(entry.coffee_price)) +
+                "</span>" +
+                '<span class="rating-chip">' +
+                escapeHtml(returnText(entry.would_return)) +
+                "</span>" +
+                "</div>" +
+                '<p class="rating-notes">' +
+                escapeHtml(entry.notes || "No notes.") +
+                "</p>" +
+                "</article>"
+              );
+            })
+            .join("");
+
+          listEl.innerHTML = items;
+        }
+
+        var visited = document.getElementById("visited-at");
+        if (visited && !visited.value) {
+          visited.value = toDatetimeLocalValue(new Date());
+        }
+
+        var form = document.getElementById("rating-form");
+        var statusEl = document.getElementById("form-status");
+        var ratingsList = document.getElementById("past-ratings-list");
+        var filterWorthReturning = document.getElementById("filter-worth-returning");
+        var filterSuburb = document.getElementById("filter-suburb");
+        renderRatings();
+
+        if (filterWorthReturning) {
+          filterWorthReturning.addEventListener("change", renderRatings);
+        }
+        if (filterSuburb) {
+          filterSuburb.addEventListener("input", renderRatings);
+        }
+
+        if (ratingsList) {
+          ratingsList.addEventListener("click", function (e) {
+            var target = e.target;
+            if (!(target instanceof HTMLElement)) return;
+            var id = target.getAttribute("data-delete-id");
+            if (!id) return;
+
+            var ratings = parseRatings().filter(function (entry) {
+              return entry.id !== id;
+            });
+            saveRatings(ratings);
+            renderRatings();
+            if (statusEl) {
+              statusEl.textContent = "Rating deleted.";
+            }
+          });
+        }
+
+        if (form) {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            if (statusEl) statusEl.textContent = "";
+
+            var cafeInput = document.getElementById("cafe-name");
+            var selectedStars = form.querySelector('input[name="stars"]:checked');
+            if (cafeInput && !cafeInput.value.trim()) {
+              if (statusEl) statusEl.textContent = "Please enter a cafe name.";
+              cafeInput.focus();
+              return;
+            }
+            if (!selectedStars) {
+              if (statusEl) statusEl.textContent = "Please select a star rating.";
+              return;
+            }
+            if (!form.checkValidity()) {
+              form.reportValidity();
+              return;
+            }
+
+            var data = new FormData(form);
+            var payload = {
+              id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+              created_at: new Date().toISOString()
+            };
+            data.forEach(function (v, k) {
+              payload[k] = String(v).trim();
+            });
+
+            var ratings = parseRatings();
+            ratings.push(payload);
+            saveRatings(ratings);
+            renderRatings();
+
+            if (statusEl) {
+              statusEl.textContent = "Rating saved.";
+            }
+            form.reset();
+            if (visited) {
+              visited.value = toDatetimeLocalValue(new Date());
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
