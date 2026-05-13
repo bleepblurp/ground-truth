@@ -786,16 +786,11 @@
           }
 
           if (!ratings.length) {
-            var hasActiveFilters = worthReturningOnly || Boolean(suburbTerm);
-            if (hasActiveFilters) {
-              listEl.innerHTML =
-                '<div class="rating-empty-state">' +
-                '<p class="rating-empty">No ratings here yet — time to explore!</p>' +
-                '<a class="btn-nearby" href="https://www.google.com/maps/search/?api=1&query=specialty+coffee+near+me" target="_blank" rel="noopener noreferrer">Find cafes near me →</a>' +
-                "</div>";
-              return;
-            }
-            listEl.innerHTML = '<p class="rating-empty">No ratings yet. Save your first one above.</p>';
+            listEl.innerHTML =
+              '<div class="rating-empty-state">' +
+              '<p class="rating-empty">No ratings here yet — time to explore!</p>' +
+              '<a class="btn-nearby" href="https://www.google.com/maps/search/?api=1&query=specialty+coffee+near+me" target="_blank" rel="noopener noreferrer">Find cafes near me →</a>' +
+              "</div>";
             return;
           }
 
