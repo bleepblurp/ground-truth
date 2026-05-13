@@ -508,6 +508,44 @@
         color: var(--muted);
       }
 
+      .rating-empty-state {
+        display: grid;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .btn-nearby {
+        width: fit-content;
+        min-height: 46px;
+        padding: 11px 16px;
+        border-radius: 12px;
+        border: none;
+        background: var(--primary);
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 3px 0 var(--primary-dark), 0 6px 16px rgba(26, 107, 114, 0.28);
+        transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
+      }
+
+      .btn-nearby:hover {
+        filter: brightness(1.06);
+      }
+
+      .btn-nearby:active {
+        transform: translateY(2px);
+        box-shadow: 0 1px 0 var(--primary-dark), 0 4px 12px rgba(26, 107, 114, 0.2);
+      }
+
+      .btn-nearby:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
       .btn-delete {
         border: 2px solid rgba(26, 107, 114, 0.25);
         border-radius: 10px;
@@ -574,8 +612,7 @@
       </header>
 
       <section class="card card--form" aria-labelledby="rating-form-heading">
-        <h2 id="rating-form-heading">Add a Rating</h2>
-        <p class="hint" style="margin-bottom: 16px">Log a visit. Large controls are sized for thumbs on a phone.</p>
+        <h2 id="rating-form-heading">Rate your coffee</h2>
 
         <form id="rating-form" class="form-stack" novalidate>
           <div class="field">
@@ -589,18 +626,18 @@
           </div>
 
           <fieldset class="field">
-            <legend>Star rating <span class="hint">(1–5)</span></legend>
+            <legend>Overall coffee rating</legend>
             <div class="star-row" role="group" aria-label="Star rating from 1 to 5">
               <input type="radio" id="star-1" name="stars" value="1" required />
-              <label for="star-1" title="1 star">1</label>
+              <label for="star-1" title="1 star">1★</label>
               <input type="radio" id="star-2" name="stars" value="2" />
-              <label for="star-2" title="2 stars">2</label>
+              <label for="star-2" title="2 stars">2★</label>
               <input type="radio" id="star-3" name="stars" value="3" />
-              <label for="star-3" title="3 stars">3</label>
+              <label for="star-3" title="3 stars">3★</label>
               <input type="radio" id="star-4" name="stars" value="4" />
-              <label for="star-4" title="4 stars">4</label>
+              <label for="star-4" title="4 stars">4★</label>
               <input type="radio" id="star-5" name="stars" value="5" />
-              <label for="star-5" title="5 stars">5</label>
+              <label for="star-5" title="5 stars">5★</label>
             </div>
           </fieldset>
 
@@ -751,7 +788,11 @@
           if (!ratings.length) {
             var hasActiveFilters = worthReturningOnly || Boolean(suburbTerm);
             if (hasActiveFilters) {
-              listEl.innerHTML = '<p class="rating-empty">No ratings match... Time to explore!</p>';
+              listEl.innerHTML =
+                '<div class="rating-empty-state">' +
+                '<p class="rating-empty">No ratings here yet — time to explore!</p>' +
+                '<a class="btn-nearby" href="https://www.google.com/maps/search/?api=1&query=specialty+coffee+near+me" target="_blank" rel="noopener noreferrer">Find cafes near me →</a>' +
+                "</div>";
               return;
             }
             listEl.innerHTML = '<p class="rating-empty">No ratings yet. Save your first one above.</p>';
